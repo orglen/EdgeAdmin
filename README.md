@@ -120,12 +120,19 @@ EdgeCommon是各个组件公共依赖的源码，下载地址 https://github.com
 ### 编译EdgeAdmin管理平台
 
 从 https://github.com/orglen/EdgeAdmin 下载EdgeAdmin源码；
+
 从 https://github.com/orglen/EdgeCommon 下载EdgeCommon源码，如果已经下载则不需要重复下载；
+
 将EdgeAdmin和EdgeCommon放在同一目录下；
+
 转到 EdgeAdmin 目录下；
-执行 go mod download 下载项目依赖的源码；
-复制 build/configs/server.template.yaml 到 build/configs/server.yaml，如果 server.yaml 已经存在则无需重复复制；这个文件里默认指定了管理平台的访问端口为7788，可以根据自己的需要进行修改；
-复制 build/configs/api.admin.template.yaml 到 build/configs/api.admin.yaml；这个文件默认指定了API节点的端口为8003，在启动API节点时如果修改了端口号，也要在这里进行同步的修改；
+
+执行 `go mod download` 下载项目依赖的源码；
+
+复制 `build/configs/server.template.yaml` 到 `build/configs/server.yaml`，如果 server.yaml 已经存在则无需重复复制；这个文件里默认指定了管理平台的访问端口为7788，可以根据自己的需要进行修改；
+
+复制 `build/configs/api.admin.template.yaml` 到 `build/configs/api.admin.yaml`；这个文件默认指定了API节点的端口为8003，在启动API节点时如果修改了端口号，也要在这里进行同步的修改；
+
 运行 `go run -tags community cmd/edge-admin/main.go`
 
 
