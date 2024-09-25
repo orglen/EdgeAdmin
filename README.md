@@ -148,9 +148,12 @@ EdgeCommon是各个组件公共依赖的源码，下载地址 https://github.com
 
 API节点是唯一可以操作数据库的节点，所以需要在步骤中配置数据库，也是其他节点依赖运行的节点。
 
-从 https://github.com/orglen/EdgeAPI 下载EdgeAPI源码；
+从 https://github.com/orglen/EdgeAPI 下载EdgeAPI源码
+
 从 https://github.com/orglen/EdgeCommon 下载EdgeCommon源码，如果已经下载则不需要重复下载；
+
 将EdgeAdmin和EdgeCommon放在同一目录下；
+
 转到 EdgeAPI 目录下；
 
 执行 `go mod download` 下载项目依赖的源码；
@@ -209,11 +212,17 @@ fi
 ### 编译EdgeNode边缘节点
 
 从 https://github.com/orglen/EdgeNode 下载EdgeNode源码；
+
 从 https://github.com/orglen/EdgeCommon 下载EdgeCommon源码，如果已经下载则不需要重复下载；
+
 将EdgeNode和EdgeCommon放在同一目录下；
+
 转到 EdgeNode 目录下；
+
 执行 `go mod download` 下载项目依赖的源码；
+
 复制 `build/configs/api_node.template.yaml 到 build/configs/api_node.yaml`，如果 `api_node.yaml` 已经存在则无需重复复制；然后修改其中的配置；如果你还没有边缘节点，需要先运行EdgeAdmin并通过界面创建一个节点后再修改配置后运行边缘节点；
+
 运行 `go run -tags community cmd/edge-node/main.go`
 
 * 商业版源码请将 -tags community 换成 -tags plus
