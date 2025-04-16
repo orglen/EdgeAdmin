@@ -167,6 +167,13 @@ API节点是唯一可以操作数据库的节点，所以需要在步骤中配�
 
 复制 `build/configs/api.template.yaml` 到 `build/configs/api.yaml`，如果 `api.yaml` 已经存在则无需重复复制；然后修改其中的配置 nodeId 为API节点的ID，secret 为API节点的密钥；如果还没有创建过API节点，则可以在修改数据库配置（第7步）后，通过执行 `go run -tags community cmd/edge-api/main.go setup -api-node-protocol=http -api-node-host=127.0.0.1 -api-node-port=8003` 初始化数据库，然后在执行后的控制台提示或者数据库 edgeAPINodes中获取节点ID（字段uniqueId）和密钥（字段secret）；
 
+## 先将api打包编译
+go build -tags community -o edge-api cmd/edge-api/main.go
+在EdgeAdmin/build 新建一个edge-api文件夹
+
+将EdgeAPI/build/configs 拷贝到EdgeAdmin/build 下
+再将打包好的edge-api复制到EdgeAdmin/build/edge-api下即可运行
+
 商业版源码请将 `-tags community` 换成 `-tags plus`
 
 复制 `build/configs/db.template.yaml 到 build/configs/db.yaml`，将其中的 `prod` 修改为 `dev`，并修改其中的数据库配置，通常是用户名、密码、MySQL数据库地址和端口；
