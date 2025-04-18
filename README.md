@@ -172,7 +172,7 @@ go build -tags community -o edge-api cmd/edge-api/main.go
 在EdgeAdmin/build 新建一个edge-api文件夹
 
 将EdgeAPI/build/configs 拷贝到EdgeAdmin/build 下
-再将打包好的edge-api复制到EdgeAdmin/build/edge-api下即可运行
+再将打包好的edge-api复制到EdgeAdmin/build/edge-api/bin下即可运行
 
 商业版源码请将 `-tags community` 换成 `-tags plus`
 
