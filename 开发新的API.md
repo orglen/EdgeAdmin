@@ -14,6 +14,10 @@
 在使用 build.sh 编译 .proto 文件之前，你需要确保已经为 protoc 安装了对应的插件：
 
 ```bash
+# 安装protobuf
+sudo apt update
+sudo apt install -y protobuf-compiler
+
 # install protoc-gen-go plugin
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
@@ -75,6 +79,8 @@ message SayHelloResponse {
 
 服务定义好之后，需要执行编译：
 
+
+
 ```bash
 # 必须到build目录下
 cd EdgeCommon/build/
@@ -90,6 +96,98 @@ ok
 ```
 
 如果不成功，会有错误提示，请根据错误提示进行修改。
+
+
+## 若出现以下报错
+
+```
+../EdgeCommon/pkg/rpc/pb/service_node_grpc.pb.go:122:65: undefined: grpc.BidiStreamingClient
+../EdgeCommon/pkg/rpc/pb/service_node_grpc.pb.go:372:42: undefined: grpc.BidiStreamingClient
+../EdgeCommon/pkg/rpc/pb/service_node_grpc.pb.go:945:18: undefined: grpc.BidiStreamingServer
+../EdgeCommon/pkg/rpc/pb/service_node_grpc.pb.go:1505:42: undefined: grpc.BidiStreamingServer
+../EdgeCommon/pkg/rpc/pb/service_ns_node_grpc.pb.go:92:67: undefined: grpc.BidiStreamingClient
+../EdgeCommon/pkg/rpc/pb/service_ns_node_grpc.pb.go:302:46: undefined: grpc.BidiStreamingClient
+../EdgeCommon/pkg/rpc/pb/service_ns_node_grpc.pb.go:435:20: undefined: grpc.BidiStreamingServer
+../EdgeCommon/pkg/rpc/pb/service_ns_node_grpc.pb.go:875:46: undefined: grpc.BidiStreamingServer
+../EdgeCommon/pkg/rpc/pb/service_report_node_grpc.pb.go:58:71: undefined: grpc.BidiStreamingClient
+../EdgeCommon/pkg/rpc/pb/service_report_node_grpc.pb.go:257:24: undefined: grpc.BidiStreamingServer
+../EdgeCommon/pkg/rpc/pb/service_ns_node_grpc.pb.go:875:46: too many errors
+```
+比如：
+
+```
+undefined: grpc.BidiStreamingClient
+undefined: grpc.BidiStreamingServer
+```
+
+说明你的 gRPC 生成的代码里用到了新的双向流接口（`BidiStreamingClient/Server`），但是你的 `google.golang.org/grpc` 包版本太旧，不支持这些接口。
+
+---
+
+## 产生原因
+
+* 你执行 `protoc` 生成了 grpc 代码，版本是新的（可能用的是 `protoc-gen-go-grpc` 的新版本）
+* 但是你项目依赖的 `grpc` 包版本太老，缺少这些新接口定义
+
+---
+
+## 解决方案
+
+### 1. 升级 `google.golang.org/grpc` 包
+
+执行：
+
+```bash
+go get google.golang.org/grpc@latest
+go mod tidy
+```
+
+这会把 `grpc` 包升级到最新版本，包含 `BidiStreamingClient/Server` 类型。
+
+---
+
+### 2. 确保 `protoc-gen-go` 和 `protoc-gen-go-grpc` 版本匹配
+
+建议也升级：
+
+```bash
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+```
+
+---
+
+### 3. 重新生成 protobuf 和 grpc 代码
+
+重新运行你的 `protoc` 命令生成新的 pb 代码，确保生成代码和依赖包版本匹配。
+
+---
+
+### 4. 重新编译项目
+
+```bash
+go build ./...
+```
+
+或
+
+```bash
+go run -tags community cmd/edge-api/main.go
+```
+
+---
+
+## 总结
+
+| 问题                                    | 解决方法                              |
+| ------------------------------------- | --------------------------------- |
+| `undefined: grpc.BidiStreamingClient` | 升级 `google.golang.org/grpc` 到最新版本 |
+| 代码和依赖版本不匹配                            | 重新生成代码和更新依赖                       |
+
+---
+
+
+
 
 编译成功后，会在 EdgeCommon/pkg/rpc/pb/ 目录下生成两个文件：
 
