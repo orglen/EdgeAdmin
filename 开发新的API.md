@@ -97,7 +97,8 @@ ok
 
 如果不成功，会有错误提示，请根据错误提示进行修改。
 
-也可以根据`build.sh`里面内容依次手动执行以下命令
+也可以根据`build.sh`里面内容依次手动执行以下命令,
+还是第一部，进入 `cd EdgeCommon/build/`,分别执行
 
 ```bash
 rm -f ../pkg/rpc/pb/*.pb.go
