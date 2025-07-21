@@ -97,17 +97,25 @@ ok
 
 如果不成功，会有错误提示，请根据错误提示进行修改。
 
-也可以根据`build.sh`里面内容依次手动执行
+也可以根据`build.sh`里面内容依次手动执行以下命令
+
 ```bash
-
 rm -f ../pkg/rpc/pb/*.pb.go
+```
 
+```bash
 protoc --go_out=../pkg/rpc --proto_path=../pkg/rpc/protos  ../pkg/rpc/protos/*.proto
+```
 
+```bash
 protoc --go-grpc_out=../pkg/rpc --go-grpc_opt=require_unimplemented_servers=false --proto_path=../pkg/rpc/protos  ../pkg/rpc/protos/*.proto
+```
 
+```bash
 protoc --go_out=../pkg/rpc --proto_path=../pkg/rpc/protos ../pkg/rpc/protos/models/*.proto
+```
 
+```bash
 go run ../cmd/proto-json/main.go --quiet
 ```
 
