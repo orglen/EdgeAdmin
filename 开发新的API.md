@@ -97,6 +97,20 @@ ok
 
 如果不成功，会有错误提示，请根据错误提示进行修改。
 
+也可以根据`build.sh`里面内容依次手动执行
+```bash
+
+rm -f ../pkg/rpc/pb/*.pb.go
+
+protoc --go_out=../pkg/rpc --proto_path=../pkg/rpc/protos  ../pkg/rpc/protos/*.proto
+
+protoc --go-grpc_out=../pkg/rpc --go-grpc_opt=require_unimplemented_servers=false --proto_path=../pkg/rpc/protos  ../pkg/rpc/protos/*.proto
+
+protoc --go_out=../pkg/rpc --proto_path=../pkg/rpc/protos ../pkg/rpc/protos/models/*.proto
+
+go run ../cmd/proto-json/main.go --quiet
+```
+
 
 ## 若出现以下报错
 
@@ -318,7 +332,6 @@ curl -XPOST -H "X-Edge-Access-Token: dvQvl85OVJkZjGOSgmvnlT9WkxiG6kRuAwJIMryat3Z
 了解了简单的整个过程后，你可以在 `HelloWorldService.SayHello()` 方法中实现更复杂的逻辑。
 
 服务一旦定义后，你就可以轻松在其中添加更多的方法。
-
 
 
 
